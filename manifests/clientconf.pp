@@ -1,11 +1,8 @@
 # Define: burp::clientconf
 #
-# Client config on burp server.
+# This file is needed on the server for each client.
 #
 define burp::clientconf (
-  $includes,
-  $excludes,
-  $options,
   $password,
   ) {
 
