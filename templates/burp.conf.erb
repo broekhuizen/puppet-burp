@@ -66,19 +66,29 @@ ssl_key_password = <%= scope['burp::ssl_key_password'] %>
 ssl_peer_cn = burpserver
 
 # Example syntax for pre/post scripts
-#backup_script_pre=/path/to/a/script
+#backup_script_pre = <%= scope['burp::backup_script_pre'] %>
+
 #backup_script_post=/path/to/a/script
 #restore_script_pre=/path/to/a/script
 #restore_script_post=/path/to/a/script
 
+# Rudi: these entries are not here by default
+server_script_post=<%= scope['burp::server_script_post'] %>
+server_script_post_arg=<%= scope['burp::cname'] %>
+
 # The following options specify exactly what to backup.
 # The server will override them if there is at least one 'include=' line on
 # the server side.
-include = /home
-#exclude = /home/graham/testdir/librsync-0.9.7/testsuite
-#include = /home/graham/testdir/librsync-0.9.7/testsuite/deep
-#include = /home/graham/xdir
-#exclude = /home/graham/testdir/libr
+# includes
+<% [@includes].flatten.each do |include| -%>
+include=<%= include %>
+<% end -%>
+# excludes
+<% if !@excludes.nil? -%>
+<% [@excludes].flatten.each do |exclude| -%>
+exclude=<%= exclude %>
+<% end -%>
+<% end -%>
 # Exclude file names ending in '.vdi' or '.vmdk' (case insensitive)
 #exclude_ext = vdi
 #exclude_ext = vmd
