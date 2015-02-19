@@ -39,6 +39,7 @@ class burp::server {
     file { '/etc/burp/server_script_post':
       content => template("burp/server_script_post.erb"),
       mode    => 0700,
+      require => Package['burp']
     }
   }
 
