@@ -1,0 +1,95 @@
+# == Class: burp
+#
+# Full description of class burp here.
+#
+# === Parameters
+#
+# Document parameters here.
+#
+# [*mode*]
+#   String.
+#   Default: client
+#   Valid values: client, server
+#
+# [*ssl_key_password*]
+#   String. Password used only once, before the first backupjob, when creating ssl keys
+#   Default: ssl_key_password
+#
+# === Variables
+#
+# Here you should define a list of variables that this module would require.
+#
+# [*sample_variable*]
+#   Explanation of how this variable affects the funtion of this class and if
+#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
+#   External Node Classifier as a comma separated list of hostnames." (Note,
+#   global variables should be avoided in favor of class parameters as
+#   of Puppet 2.6.)
+#
+# === Examples
+#
+#  class { burp:
+#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  }
+#
+# === Authors
+#
+# Author Name rudi.broekhuizen@naturalis.nl
+#
+# === Copyright
+#
+# Copyright 2014 Your name here, unless otherwise noted.
+#
+
+class burp (
+# general settings
+  $mode             = "client",
+  $ssl_key_password = "ssl_key_password",     # must be the same on client and server
+ 
+# client: settings for /etc/burp/burp.conf
+  $cname              = $fqdn,
+  $server             = "172.16.3.13",
+  $password           = "password",
+  $server_can_restore = "1",
+  $server_script_post = "/etc/burp/server_script_post",   # initiated by client, runs on server
+  $backup_script_pre  = "",                               # initiated by client, runs on client
+
+# server: settings for /etc/burp-server.conf
+  $directory             = "/mnt/backup/burpdata",
+  $max_children          = "25",
+  $max_status_children   = "25",
+  $keep                  = "100",
+  $waittime              = "20h",
+  $starttime             = "Mon,Tue,Wed,Thu,Fri,Sat,Sun,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+  $common_clientconfig   = ['working_dir_recovery_method=resume'],
+  $backup_stats_logstash = true,
+
+# server: create client config files in /etc/clientconfdir
+  $clientconf_hash = { 'windowsclient.domain' => { includes => ['C:/', 'D:/'],
+                                                   excludes => ['D:/$RECYCLE.BIN/'],
+                                                   options  => [''],
+                                                   password => 'password',
+                                                 },
+
+                         'linuxclient.domain' => { includes => ['/home', '/var/log'],
+                                                   excludes => ['/home/ubuntu'],
+                                                   options  => [''],
+                                                   password => 'password',
+                                                 },
+                     },
+) {
+
+  # Install package 
+  include burp::package
+
+  if $mode == "server" {
+    class { 'burp::server': }
+
+  } elsif $mode == "client" {
+      class { 'burp::client': }
+
+    } else {
+        fail( "Please set mode: server or client..." )
+  }
+
+}
