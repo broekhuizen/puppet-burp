@@ -51,8 +51,9 @@ class burp (
   $server             = "172.16.3.13",
   $password           = "password",
   $server_can_restore = "1",
-  $server_script_post = "/etc/burp/server_script_post",   # initiated by client, runs on server
-  $backup_script_pre  = "",                               # initiated by client, runs on client
+  $options            = ['server_script_post = /etc/burp/server_script_post',
+                          server_script_post_arg = <%= @fqdn %>
+                        ],
 
 # server: settings for /etc/burp-server.conf
   $directory             = "/mnt/backup/burpdata",
