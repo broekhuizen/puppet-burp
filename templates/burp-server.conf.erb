@@ -140,3 +140,8 @@ timer_arg = <%= scope['burp::starttime'] %>
 # individual original clients in the individual clientconfdir files.
 # restore_client = someclient
 # restore_client = someotherclient
+
+# extra options, see this file and http://burp.grke.org/docs/manpage.html
+<% [@serverside_options].flatten.each do |option| -%>
+<%= option %>
+<% end -%> 
