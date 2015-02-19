@@ -19,13 +19,13 @@ class burp::package{
     }
 
     apt::key {'ppa:hugo-vanduijn/burp-latest':
-      key         => 'A4EF7A24',
-      key_server  => 'keyserver.ubuntu.com',
-      require     => File['/etc/apt/sources.list.d']
+      key        => 'A4EF7A24',
+      key_server => 'keyserver.ubuntu.com',
+      require    => File['/etc/apt/sources.list.d']
     }
 
     package { 'burp':
-      ensure => latest,
+      ensure  => latest,
       require => [Apt::Ppa['ppa:hugo-vanduijn/burp-latest'], Apt::Key['ppa:hugo-vanduijn/burp-latest']]
     }
   }
