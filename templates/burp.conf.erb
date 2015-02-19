@@ -72,10 +72,6 @@ ssl_peer_cn = burpserver
 #restore_script_pre=/path/to/a/script
 #restore_script_post=/path/to/a/script
 
-# Rudi: these entries are not here by default
-server_script_post=<%= scope['burp::server_script_post'] %>
-server_script_post_arg=<%= scope['burp::cname'] %>
-
 # The following options specify exactly what to backup.
 # The server will override them if there is at least one 'include=' line on
 # the server side.
@@ -116,3 +112,9 @@ nobackup = .nobackup
 # Exclude files from compression by extension.
 exclude_comp=bz2
 exclude_comp=gz
+
+
+# extra options, see this file and http://burp.grke.org/docs/manpage.html
+<% [@options].flatten.each do |option| -%>
+<%= option %>
+<% end -%> 
