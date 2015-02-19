@@ -46,14 +46,14 @@ class burp (
   $mode             = "client",
   $ssl_key_password = "ssl_key_password",            # must be the same on client and server
  
-# client: settings for /etc/burp/burp.conf
+# client: settings for /etc/burp/burp.conf on client
   $server             = "172.16.3.13",
   $password           = "password",
   $cname              = $fqdn,
   $server_can_restore = "1",
   $includes           = [ '/home', '/var/log' ],
   $excludes           = [ '/home/ubuntu' ],
-  $client_options     = [ 'ratelimit=10' ],          # see http://burp.grke.org/docs/manpage.html for all options
+  $clientside_options = [ 'ratelimit=10' ],          # see http://burp.grke.org/docs/manpage.html for all options
                            
 # server: settings for /etc/burp-server.conf
   $directory             = "/mnt/backup/burpdata",
@@ -64,6 +64,7 @@ class burp (
   $starttime             = "Mon,Tue,Wed,Thu,Fri,Sat,Sun,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
   $backup_stats_logstash = true,
   $common_clientconfig   = [ 'working_dir_recovery_method=resume' ],
+  $serverside_options    = [ 'ratelimit=10' ],
  
 
 # server: create client config files in /etc/clientconfdir
