@@ -47,13 +47,14 @@ class burp (
   $ssl_key_password = "ssl_key_password",     # must be the same on client and server
  
 # client: settings for /etc/burp/burp.conf
-  $cname              = $fqdn,
   $server             = "172.16.3.13",
   $password           = "password",
+  $cname              = $fqdn,
   $server_can_restore = "1",
-  $options            = [ 'server_script_post = /etc/burp/server_script_post',
-                          'server_script_post_arg = <%= @fqdn %>',
-                        ],
+  $backup_script_pre  = "",                               # initiated by client, runs on client
+  $server_script_post = "/etc/burp/server_script_post",   # initiated by client, runs on server
+  $includes           = ['/home', '/var/log'],
+  $excludes           = ['/home/ubuntu'],
 
 # server: settings for /etc/burp-server.conf
   $directory             = "/mnt/backup/burpdata",
@@ -66,17 +67,9 @@ class burp (
   $backup_stats_logstash = true,
 
 # server: create client config files in /etc/clientconfdir
-  $clientconf_hash = { 'windowsclient.domain' => { includes => ['C:/', 'D:/'],
-                                                   excludes => ['D:/$RECYCLE.BIN/'],
-                                                   options  => [''],
-                                                   password => 'password',
-                                                 },
-
-                         'linuxclient.domain' => { includes => ['/home', '/var/log'],
-                                                   excludes => ['/home/ubuntu'],
-                                                   options  => [''],
-                                                   password => 'password',
-                                                 },
+  $clientconf_hash = { 'windowsclient.domain' => { password => 'password', },
+                         'linuxclient.domain' => { password => 'password', },
+                         'workstation.domain' => { password => 'password', },
                      },
 ) {
 
