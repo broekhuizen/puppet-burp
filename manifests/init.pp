@@ -42,7 +42,7 @@
 #
 
 class burp (
-# general settings
+# general settings, server and client settings
   $mode             = "client",
   $ssl_key_password = "ssl_key_password",          # must be the same on client and server
   $password         = "password",
