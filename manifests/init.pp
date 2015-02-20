@@ -46,8 +46,8 @@ class burp (
 # client: settings for /etc/burp/burp.conf
   $client                  = true,
   $client_ssl_key_password = "ssl_key_password",
-  $client_password         = "password",
   $client_extra_options    = [ 'ratelimit=10' ],
+  $password                = "password",
   $server                  = "172.16.3.13",
   $cname                   = $fqdn,
   $server_can_restore      = "1",
@@ -57,7 +57,6 @@ class burp (
 # server: settings for /etc/burp-server.conf
   $server                  = false,
   $server_ssl_key_password = "ssl_key_password",
-  $server_password         = "password",
   $server_extra_options    = [ 'ratelimit=10' ],
   $directory               = "/mnt/backup/burpdata",
   $max_children            = "25",
