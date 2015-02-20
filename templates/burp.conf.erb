@@ -2,7 +2,7 @@
 
 mode = client
 port = 4971
-server = <%= scope['burp::server'] %>
+server = <%= scope['burp::server_ip'] %>
 password = <%= scope['burp::password'] %>
 cname = <%= scope['burp::cname'] %>
 # Choose the protocol to use.
