@@ -42,47 +42,48 @@
 #
 
 class burp (
-# general settings, server and client settings
-  $mode             = "client",
-  $ssl_key_password = "ssl_key_password",          # must be the same on client and server
-  $password         = "password",
-  $extra_options    = [ 'ratelimit=10' ],          # see http://burp.grke.org/docs/manpage.html for all options
 
-# client: settings for /etc/burp/burp.conf on client
-  $server             = "172.16.3.13",
-  $cname              = $fqdn,
-  $server_can_restore = "1",
-  $includes           = [ '/home', '/var/log' ],
-  $excludes           = [ '/home/ubuntu' ],
+# client: settings for /etc/burp/burp.conf
+  $client                  = true,
+  $client_ssl_key_password = "ssl_key_password",
+  $client_password         = "password",
+  $client_extra_options    = [ 'ratelimit=10' ],
+  $server                  = "172.16.3.13",
+  $cname                   = $fqdn,
+  $server_can_restore      = "1",
+  $includes                = [ '/home', '/var/log' ],
+  $excludes                = [ '/home/ubuntu' ],
  
 # server: settings for /etc/burp-server.conf
-  $directory             = "/mnt/backup/burpdata",
-  $max_children          = "25",
-  $max_status_children   = "25",
-  $keep                  = "100",
-  $waittime              = "20h",
-  $starttime             = "Mon,Tue,Wed,Thu,Fri,Sat,Sun,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
-  $backup_stats_logstash = true,
-  $common_clientconfig   = [ 'working_dir_recovery_method=resume' ],
+  $server                  = false,
+  $server_ssl_key_password = "ssl_key_password",
+  $server_password         = "password",
+  $server_extra_options    = [ 'ratelimit=10' ],
+  $directory               = "/mnt/backup/burpdata",
+  $max_children            = "25",
+  $max_status_children     = "25",
+  $keep                    = "100",
+  $waittime                = "20h",
+  $starttime               = "Mon,Tue,Wed,Thu,Fri,Sat,Sun,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+  $backup_stats_logstash   = true,
+  $common_clientconfig     = [ 'working_dir_recovery_method=resume' ],
 
 # server: create client config files in /etc/clientconfdir
-  $clientconf_hash = { 'windowsclient.domain' => { password => 'password', },
-                         'linuxclient.domain' => { password => 'password', },
-                         'workstation.domain' => { password => 'password', },
+  $clientconf_hash = { 'localhost'          => { password => 'password', },
+                       'linuxclient.domain' => { password => 'password', },
+                       'workstation.domain' => { password => 'password', },
                      },
 ) {
 
   # Install package 
   include burp::package
 
-  if $mode == "server" {
+  if $server == true {
     class { 'burp::server': }
-
-  } elsif $mode == "client" {
-      class { 'burp::client': }
-
-    } else {
-        fail( "Please set mode: server or client..." )
   }
 
+  if $client == true {
+    class { 'burp::client': }
+  }
+  
 }
