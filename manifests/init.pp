@@ -48,7 +48,7 @@ class burp (
   $client_ssl_key_password = "ssl_key_password",
   $client_extra_options    = [ 'ratelimit=10' ],
   $password                = "password",
-  $server                  = "172.16.3.13",
+  $server_ip               = "172.16.3.13",
   $cname                   = $fqdn,
   $server_can_restore      = "1",
   $includes                = [ '/home', '/var/log' ],
