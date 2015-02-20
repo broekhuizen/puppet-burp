@@ -3,7 +3,7 @@
 mode = client
 port = 4971
 server = <%= scope['burp::server'] %>
-password = <%= scope['burp::password'] %>
+password = <%= scope['burp::client_password'] %>
 cname = <%= scope['burp::cname'] %>
 # Choose the protocol to use.
 # 0 to decide automatically, 1 to force burp1 mode, 2 to force burp2 mode.
@@ -60,7 +60,7 @@ ssl_key = /etc/burp/ssl_cert-client.key
 #ssl_ciphers =
 
 # SSL key password
-ssl_key_password = <%= scope['burp::ssl_key_password'] %>
+ssl_key_password = <%= scope['burp::client_ssl_key_password'] %>
 
 # Common name in the certificate that the server gives us
 ssl_peer_cn = burpserver
@@ -115,6 +115,6 @@ exclude_comp=gz
 
 
 # extra options, see this file and http://burp.grke.org/docs/manpage.html
-<% [@extra_options].flatten.each do |option| -%>
+<% [@client_extra_options].flatten.each do |option| -%>
 <%= option %>
 <% end -%>
