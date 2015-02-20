@@ -3,7 +3,7 @@
 mode = client
 port = 4971
 server = <%= scope['burp::server'] %>
-password = <%= scope['burp::client_password'] %>
+password = <%= scope['burp::password'] %>
 cname = <%= scope['burp::cname'] %>
 # Choose the protocol to use.
 # 0 to decide automatically, 1 to force burp1 mode, 2 to force burp2 mode.
